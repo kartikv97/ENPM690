@@ -139,7 +139,7 @@ def test(DataType, CmacType):
     cumulative_error = 0
     #input_data = []
 
-    if DataType is 'Test Data':
+    if DataType is 'TestData':
         input_data = test_input_dataset
         true_output = test_true_output_dataset
         test_indices = test_global_indices
@@ -155,7 +155,7 @@ def test(DataType, CmacType):
     for i in range(0, len(input_data)):
 
 
-        if DataType is 'Test Data':
+        if DataType is 'TestData':
             index = find_nearest_key(input_dataset, input_data[i])
         #if DataType is 'Train Data':
         else :
@@ -217,10 +217,10 @@ def CMAC_Algorithm(CmacType):
 
         train()
 
-        training_CMAC_output, Training_Cumulative_Error = test('Train Data', CmacType)
+        training_CMAC_output, Training_Cumulative_Error = test('TrainData', CmacType)
         TrainError = Training_Cumulative_Error / train_dataset_size
 
-        testing_CMAC_output, Testing_Cumulative_Error = test('Test Data', CmacType)
+        testing_CMAC_output, Testing_Cumulative_Error = test('TestData', CmacType)
         TestError = Testing_Cumulative_Error / test_dataset_size
 
         iterations = iterations + 1
