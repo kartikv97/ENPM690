@@ -83,7 +83,7 @@ max_output_val = 1.0
 train_error = 1.0
 test_error = 1.0
 
-local_converge_threshold = 0.01
+local_converge_threshold = 0.001
 learning_rate = 0.15
 global_converge_threshold = 0.01
 global_converge_iter = 20
@@ -229,7 +229,7 @@ def CMAC_Algorithm(CmacType):
             convergence = True
             break
     convergence_time = time.time() - convergence_time
-    plot(training_CMAC_output, testing_CMAC_output)
+    plot(training_CMAC_output, testing_CMAC_output,CmacType)
     return TrainError, TestError
 
 
@@ -243,7 +243,7 @@ def find_nearest_key(array, val):
     return index_val
 
 
-def plot(training_CMAC_output, testing_CMAC_output):
+def plot(training_CMAC_output, testing_CMAC_output,CmacType):
     sorted_train_input = [x for (y, x) in sorted(zip(train_global_indices, train_input_dataset))]
     sorted_train_output = [x for (y, x) in sorted(zip(train_global_indices, training_CMAC_output))]
     sorted_test_input = [x for (y, x) in sorted(zip(test_global_indices, test_input_dataset))]
@@ -251,10 +251,22 @@ def plot(training_CMAC_output, testing_CMAC_output):
     print('sorted_train_input', sorted_train_input)
     print('sorted_train_output', sorted_train_output)
     print('training_CMAC_output', training_CMAC_output)
-    plt.subplot(221)
-    plt.plot(train_input_dataset, train_output_dataset, 'bo', label='True Output')
-    plt.plot(sorted_train_input, sorted_train_output, 'ro', label='CMAC Output')
-    plt.title(' Input Space Size = ' + str(input_dataset_size) + '\n Training data')
+
+    plt.subplot(121)
+    plt.plot(train_input_dataset, train_output_dataset, 'o', color='black', label='True Output')
+    plt.plot(sorted_train_input, sorted_train_output, 'o',color='orange',  label='CMAC Output')
+
+    plt.title(' Input Space Size = ' + str(train_dataset_size) + '\n Training data' + '\n CMAC Type =' + str(CmacType))
+
+    plt.ylabel('Output')
+    plt.xlabel('Input ')
+    plt.legend(loc='upper right', shadow=True)
+    plt.ylim((min_output_val, max_output_val))
+
+    plt.subplot(122)
+    plt.plot(test_input_dataset, test_true_output_dataset, 'o', color='black', label='True Output')
+    plt.plot(sorted_test_input, sorted_test_output, 'o',color='orange', label='CMAC Output')
+    plt.title(' Input Space Size = ' + str(test_dataset_size) + '\n Testing data' + '\n CMAC Type =' + str(CmacType))
     plt.ylabel('Output')
     plt.xlabel('Input ')
     plt.legend(loc='upper right', shadow=True)
@@ -265,12 +277,30 @@ def plot(training_CMAC_output, testing_CMAC_output):
 
 ################   MAIN  #################
 
-# TrainErrorContinuous,TestErrorContinuous= CMAC_Algorithm('Continuous')
+plt.figure()
+plt.plot(input_dataset, output_dataset, 'o', color='black', label='True Output')
+plt.title(' Input Space Size = ' + str(input_dataset_size) + '\n Input Dataset'  )
+plt.ylabel('Output')
+plt.xlabel('Input ')
+plt.legend(loc='upper right', shadow=True)
+plt.ylim((min_output_val, max_output_val))
+plt.show()
+TrainErrorContinuous,TestErrorContinuous= CMAC_Algorithm('Continuous')
 
 TrainErrorDiscrete, TestErrorDiscrete = CMAC_Algorithm('Discrete')
 
-# print('TrainErrorContinuous',TrainErrorContinuous)
-# print('TestErrorContinuous',TestErrorContinuous)
+
 print('TrainErrorDiscrete', TrainErrorDiscrete)
 print('TestErrorDiscrete', TestErrorDiscrete)
+
+print('TrainAccuracyDiscrete',(1-TrainErrorDiscrete)*100)
+print('TestAccuracyDiscrete',(1-TestErrorDiscrete)*100)
+
+print('TrainErrorContinuous',TrainErrorContinuous)
+print('TestErrorContinuous',TestErrorContinuous)
+
+print('TrainAccuracyContinuous',(1-TrainErrorContinuous)*100)
+print('TestAccuracyDiscrete',(1-TestErrorContinuous)*100)
+
+
 
